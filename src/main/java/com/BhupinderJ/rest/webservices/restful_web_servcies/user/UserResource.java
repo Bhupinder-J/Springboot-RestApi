@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class UserResource {
 	private UserDaoService service;
@@ -34,15 +36,15 @@ public class UserResource {
 		}
 		return user;
 	}
-	
+
 	@PostMapping(path = "users")
-	public ResponseEntity<User> createUser(@RequestBody User user) {
+	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		User savedUser = service.save(user);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId())
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+
 	@DeleteMapping(path = "/users/{id}")
 	public void deleteUser(@PathVariable int id) {
 		service.deleteOne(id);
