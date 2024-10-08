@@ -32,4 +32,9 @@ public class UserDaoService {
 		return user;
 	}
 
+	public void deleteOne(int id) {
+		Predicate<? super User> predicate = user -> id == user.getId();
+		users.removeIf(predicate);
+	}
+
 }
